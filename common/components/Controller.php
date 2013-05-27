@@ -24,6 +24,13 @@ class Controller extends CController
         parent::run($actionID);
     }
 
+    public function init()
+    {
+        if (!empty(Yii::app()->params['meta'])) {
+            $this->meta = Yii::app()->params['meta'];
+        }
+    }
+
     public function setPageHeader($pageHeader, $updatePageTitle = true)
     {
         $this->_pageHeader = $pageHeader;
