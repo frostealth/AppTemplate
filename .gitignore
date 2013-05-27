@@ -1,0 +1,10 @@
+.idea
+*.class
+*.pyc
+*.pyo
+.project
+.settings
+.DS_Store
+*/www/assets
+*/www/*.css
+*/runtime/
