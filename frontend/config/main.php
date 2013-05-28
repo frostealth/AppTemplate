@@ -6,6 +6,7 @@ return CMap::mergeArray(
         'basePath' => realpath(__DIR__ . '/../'),
         'name' => 'AppName',
         'defaultController' => 'default',
+        'preload' => array('log'),
         'import' => array(
             'common.components.*',
             'common.controllers.*',

@@ -4,6 +4,7 @@ return CMap::mergeArray(
     require(__DIR__ . '/../../common/config/main.php'),
     array(
         'basePath' => realpath(__DIR__ . '/../'),
+        'preload' => array('log'),
         'import' => array(
             'common.components.*',
             'common.models.*',
