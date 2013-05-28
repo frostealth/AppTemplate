@@ -1,11 +1,8 @@
 <?php
 
-return array(
-    '' => 'dashboard/index',
-
-    // Default
-    '<controller:\w+>' => '<controller>/index',
-    '<controller:\w+>/<id:\d+>' => '<controller>/view',
-    '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-    '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+return CMap::mergeArray(
+    array(
+        '' => 'dashboard/index',
+    ),
+    require(__DIR__ . '/../../common/config/routes.php')
 );
