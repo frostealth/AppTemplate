@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -61,6 +61,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	const FLASH_COUNTERS='Yii.CWebUser.flashcounters';
 	const STATES_VAR='__states';
 	const AUTH_TIMEOUT_VAR='__timeout';
+	const AUTH_ABSOLUTE_TIMEOUT_VAR='__absolute_timeout';
 
 	/**
 	 * @var boolean whether to enable cookie-based login. Defaults to false.
@@ -74,11 +75,11 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	/**
 	 * @var string|array the URL for login. If using array, the first element should be
 	 * the route to the login action, and the rest name-value pairs are GET parameters
-	 * to construct the login URL (e.g. array('/default/login')). If this property is null,
+	 * to construct the login URL (e.g. array('/site/login')). If this property is null,
 	 * a 403 HTTP exception will be raised instead.
 	 * @see CController::createUrl
 	 */
-	public $loginUrl=array('/default/login');
+	public $loginUrl=array('/site/login');
 	/**
 	 * @var array the property values (in name-value pairs) used to initialize the identity cookie.
 	 * Any property of {@link CHttpCookie} may be initialized.
@@ -93,11 +94,16 @@ class CWebUser extends CApplicationComponent implements IWebUser
 	 */
 	public $authTimeout;
 	/**
+	 * @var integer timeout in seconds after which user is logged out regardless of activity.
+	 * @since 1.1.14
+	 */
+	public $absoluteAuthTimeout;
+	/**
 	 * @var boolean whether to automatically renew the identity cookie each time a page is requested.
 	 * Defaults to false. This property is effective only when {@link allowAutoLogin} is true.
 	 * When this is false, the identity cookie will expire after the specified duration since the user
 	 * is initially logged in. When this is true, the identity cookie will expire after the specified duration
-	 * since the user visits the default the last time.
+	 * since the user visits the site the last time.
 	 * @see allowAutoLogin
 	 * @since 1.1.0
 	 */
@@ -235,6 +241,8 @@ class CWebUser extends CApplicationComponent implements IWebUser
 						array('{class}'=>get_class($this))));
 			}
 
+			if ($this->absoluteAuthTimeout)
+				$this->setState(self::AUTH_ABSOLUTE_TIMEOUT_VAR, time()+$this->absoluteAuthTimeout);
 			$this->afterLogin(false);
 		}
 		return !$this->getIsGuest();
@@ -459,8 +467,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 					$this->changeIdentity($id,$name,$states);
 					if($this->autoRenewCookie)
 					{
-						$cookie->expire=time()+$duration;
-						$request->getCookies()->add($cookie->name,$cookie);
+						$this->saveToCookie($duration);
 					}
 					$this->afterLogin(true);
 				}
@@ -484,8 +491,7 @@ class CWebUser extends CApplicationComponent implements IWebUser
 			$data=@unserialize($data);
 			if(is_array($data) && isset($data[0],$data[1],$data[2],$data[3]))
 			{
-				$cookie->expire=time()+$data[2];
-				$cookies->add($cookie->name,$cookie);
+				$this->saveToCookie($data[2]);
 			}
 		}
 	}
@@ -766,16 +772,18 @@ class CWebUser extends CApplicationComponent implements IWebUser
 
 	/**
 	 * Updates the authentication status according to {@link authTimeout}.
-	 * If the user has been inactive for {@link authTimeout} seconds,
+	 * If the user has been inactive for {@link authTimeout} seconds, or {link absoluteAuthTimeout} has passed,
 	 * he will be automatically logged out.
 	 * @since 1.1.7
 	 */
 	protected function updateAuthStatus()
 	{
-		if($this->authTimeout!==null && !$this->getIsGuest())
+		if(($this->authTimeout!==null || $this->absoluteAuthTimeout!==null) && !$this->getIsGuest())
 		{
 			$expires=$this->getState(self::AUTH_TIMEOUT_VAR);
-			if ($expires!==null && $expires < time())
+			$expiresAbsolute=$this->getState(self::AUTH_ABSOLUTE_TIMEOUT_VAR);
+
+			if ($expires!==null && $expires < time() || $expiresAbsolute!==null && $expiresAbsolute < time())
 				$this->logout(false);
 			else
 				$this->setState(self::AUTH_TIMEOUT_VAR,time()+$this->authTimeout);

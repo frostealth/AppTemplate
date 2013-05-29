@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -75,7 +75,7 @@ class CErrorHandler extends CApplicationComponent
 	 */
 	public $discardOutput=true;
 	/**
-	 * @var string the route (eg 'default/error') to the controller action that will be used to display external errors.
+	 * @var string the route (eg 'site/error') to the controller action that will be used to display external errors.
 	 * Inside the action, it can retrieve the error information by Yii::app()->errorHandler->error.
 	 * This property defaults to null, meaning CErrorHandler will handle the error display.
 	 */
