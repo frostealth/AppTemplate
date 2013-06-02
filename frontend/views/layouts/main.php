@@ -6,7 +6,7 @@
         <?
             // Meta
             foreach ($this->meta as $metaOptions) {
-                CHtml::tag('meta', $metaOptions);
+                echo CHtml::tag('meta', $metaOptions);
             }
 
             // Icon
