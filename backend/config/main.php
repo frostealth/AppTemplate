@@ -47,6 +47,7 @@ return CMap::mergeArray(
                     ),
                     array(
                         'class' => 'CWebLogRoute',
+                        'showInFireBug' => true,
                         'enabled' => YII_DEBUG,
                     ),
                 ),

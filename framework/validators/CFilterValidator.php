@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright 2008-2013 Yii Software LLC
+ * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -38,7 +38,6 @@ class CFilterValidator extends CValidator
 	 * If there is any error, the error message is added to the object.
 	 * @param CModel $object the object being validated
 	 * @param string $attribute the attribute being validated
-	 * @throws CException if given {@link filter} is not callable
 	 */
 	protected function validateAttribute($object,$attribute)
 	{

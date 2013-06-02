@@ -5,7 +5,7 @@ return array(
     'username'              => 'somebody',
     'password'              => '',
     'charset'               => 'utf8',
-    'initSQLs'              => array('SET @@session.time_zone = \'Europe/Moscow\''),
+    'initSQLs'              => array('SET @@session.time_zone = \'+04:00\''),
     'schemaCachingDuration' => 300,
     'emulatePrepare'        => true,
     'enableParamLogging'    => true,
