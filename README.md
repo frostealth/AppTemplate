@@ -80,18 +80,20 @@ Bellow the directory structure:
 ###Top Level Directories
 At the top-most level:    
 
-* **backend**: the backend application which will be mainly used by site administrators to manage the whole system (avoiding admin modules at frontend application to avoid confusion)
+* ***backend***: the backend application which will be mainly used by site administrators to manage the whole system (avoiding admin modules at frontend application to avoid confusion)
 * ***console***: the console application that is compound of the console commands required for the system.
 * ***frontend***: the frontend application that is the main interface for end users. On a website development, this would be what the site users would see.
 * ***common***: the directory whose content is shared among all the above applications.
 
 ###Other Information
-Version: 1.3    
+Version: 1.3.1
 Includes:
 
-* YiiFramework 1.1.13
+* YiiFramework 1.1.14
 * Yii-Mail (r9 - by Jan 2011)
 
 ---
-> Frostealth    
-> [www.frostealth.ru](http://www.frostealth.ru)
+###UPD
+
+**Version 1.3.1**:
+* The YiiFramework has been updated to version 1.1.14
